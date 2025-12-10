@@ -8,6 +8,7 @@ module.exports = (sequelize, DataTypes) => {
 				type: DataTypes.INTEGER,
 				primaryKey: true,
 			},
+			name: DataTypes.STRING, // Adicionado baseado na sua classe antiga
 			description: DataTypes.TEXT,
 		},
 		{
@@ -24,7 +25,11 @@ module.exports = (sequelize, DataTypes) => {
 			foreignKey: "id_playlist",
 			sourceKey: "id",
 		});
-	Playlist.hasMany(models.UserPlaylist, {
+		Playlist.hasMany(models.UserPlaylist, {
+			foreignKey: "id_playlist",
+			sourceKey: "id",
+		});
+		Playlist.hasMany(models.Rating, {
 			foreignKey: "id_playlist",
 			sourceKey: "id",
 		});
@@ -32,16 +37,3 @@ module.exports = (sequelize, DataTypes) => {
 
 	return Playlist;
 };
-
-
-// class Playlist {
-//     static id = 0;
-//     constructor(name) {
-//         this.id = id++;
-//         this.name = name;
-//         this.musics = [];
-//         this.ratings = [];
-//     }
-// };
-
-// module.exports =  { Playlist };

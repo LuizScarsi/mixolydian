@@ -1,5 +1,5 @@
 const express = require("express");
-const playlistService = require("../services/playlist-service");
+const playlistService = require("../services/playlistService");
 
 const playlistRouter = express.Router();
 

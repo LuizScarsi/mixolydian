@@ -1,4 +1,4 @@
-const userRepository = require("../repositories/user-repository");
+const userRepository = require("../repositories/userRepository");
 
 // Função para retornar todos os users
 const returnAllUsers = async (req, res) => {
@@ -13,8 +13,8 @@ const returnAllUsers = async (req, res) => {
 
 // Função para criar um novo user
 const createUser = async (req, res) => {
-	const { id, name, email } = req.body;
-	console.log({ id, name, email });
+	const { id, name, email, password_hash } = req.body;
+	console.log({ id, name, email, password_hash });
 	try {
 		if (!id || !name || !email) {
 			return res
@@ -26,6 +26,7 @@ const createUser = async (req, res) => {
 			id,
 			name,
 			email,
+			password_hash,
 		});
 		res.status(201).json(user);
 	} catch (error) {
@@ -60,7 +61,7 @@ const updateUser = async (req, res) => {
 const deleteUser = async (req, res) => {
 	try {
 		const id = parseInt(req.params.id);
-		const removedUser = await userRepository.deleteUser({ id });
+		const removedUser = await userRepository.deleteUser(id);
 
 		if (removedUser) {
 			res.status(200).json({

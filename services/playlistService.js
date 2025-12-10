@@ -1,4 +1,4 @@
-const playlistRepository = require("../repositories/playlist-repository");
+const playlistRepository = require("../repositories/playlistRepository");
 
 // Função para retornar todas as playlists
 const returnAllPlaylists = async (req, res) => {

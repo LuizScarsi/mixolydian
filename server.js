@@ -1,6 +1,7 @@
 const express = require("express");
-const userRouter = require("./controllers/user-controller");
-const playlistRouter = require("./controllers/playlist-controller");
+const cors = require("cors");
+const userRouter = require("./controllers/userController");
+const playlistRouter = require("./controllers/playlistController");
 
 const app = express();
 app.use(express.json());
