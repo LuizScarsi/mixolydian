@@ -13,10 +13,10 @@ const returnAllUsers = async (req, res) => {
 
 // Função para criar um novo user
 const createUser = async (req, res) => {
-	const { id, name, email, password_hash, role } = req.body;
-	console.log({ id, name, email, password_hash, role });
+	const { id, name, email, password, role } = req.body;
+	console.log({ id, name, email, password, role });
 	try {
-		if (!id || !name || !email || !password_hash) {
+		if (!id || !name || !email || !password) {
 			return res
 				.status(400)
 				.json({ message: "ID, nome, email e senha são obrigatórios." });
@@ -26,7 +26,7 @@ const createUser = async (req, res) => {
 			id,
 			name,
 			email,
-			password_hash,
+			password_hash: password,
 			role,
 		});
 		res.status(201).json(user);

@@ -57,8 +57,6 @@ const updatePlaylist = async (playlistId, data, musicIds) => {
   return playlist;
 };
 
-
-// Função para deletar uma playlist
 const deletePlaylist = async (id_playlist) => {
 	try {
 		const playlist = await getPlaylistByUserId(id_playlist);
