@@ -24,17 +24,19 @@ const returnAllUserPlaylists = async (req, res) => {
 
 // Função para criar um nova playlist
 const createPlaylist = async (req, res) => {
-	const { id_user } = req.body;
+	const id_user = req.userId;
+	const { id, name, description } = req.body;
+
 	try {
 		if (!id_user) {
 			return res
 				.status(400)
 				.json({ message: "ID do user é obrigatório." });
 		}
-
 		const playlist = await playlistRepository.createPlaylist({
-			id_user,
-			playlist_name,
+			id,
+			name,
+			description,
 		});
 		res.status(201).json(playlist);
 	} catch (error) {
@@ -44,31 +46,56 @@ const createPlaylist = async (req, res) => {
 };
 
 // Função para atualizar uma playlist
+// const updatePlaylist = async (req, res) => {
+// 	const id_playlist = parseInt(req.params.id_playlist);
+
+// 	try {
+// 		const updatedPlaylist =
+// 			await playlistRepository.updatePlaylist(
+// 			id_playlist,
+// 			{ name, description },
+// 			musicIds
+// 		);
+
+// 		if (updatedPlaylist) {
+// 			res.status(200).json(updatedPlaylist);
+// 		} else {
+// 			res.status(404).json({ message: "playlist não encontrada" });
+// 		}
+// 	} catch (error) {
+// 		console.log("Erro ao atualizar playlist:", error);
+// 		res.sendStatus(500);
+// 	}
+// };
 const updatePlaylist = async (req, res) => {
-	const id_user = parseInt(req.params.id_user);
+  const playlistId = Number(req.params.id_playlist);
+  console.log(playlistId)
+  const { name, description, musicIds } = req.body;
 
-	try {
-		const updatedPlaylist =
-			await playlistRepository.updatePlaylist({
-				id_user,
-			});
+  if (!Number.isInteger(playlistId)) {
+    return res.status(400).json({ message: "ID inválido" });
+  }
 
-		if (updatedPlaylist) {
-			res.status(200).json(updatedPlaylist);
-		} else {
-			res.status(404).json({ message: "playlist não encontrada" });
-		}
-	} catch (error) {
-		console.log("Erro ao atualizar playlist:", error);
-		res.sendStatus(500);
-	}
+  try {
+    const playlist = await playlistRepository.updatePlaylist(
+      playlistId,
+      { name, description },
+      musicIds
+    );
+
+    res.json(playlist);
+  } catch (error) {
+    console.error("Erro ao atualizar playlist:", error);
+    res.sendStatus(500);
+  }
 };
+
 
 // Função para deletar uma playlist
 const deletePlaylist = async (req, res) => {
 	try {
-		const id_user = parseInt(req.params.id_user);
-		const removedPlaylist = await playlistRepository.deletePlaylist(id_user);
+		const id_playlist = parseInt(req.params.id_playlist);
+		const removedPlaylist = await playlistRepository.deletePlaylist(id_playlist);
 
 		if (removedPlaylist) {
 			res.status(200).json({

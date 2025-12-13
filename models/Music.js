@@ -1,30 +1,67 @@
+// "use strict";
+
+// module.exports = (sequelize, DataTypes) => {
+// 	const Music = sequelize.define(
+// 		"Music",
+// 		{
+// 			id: {
+// 				type: DataTypes.INTEGER,
+// 				primaryKey: true,
+// 			},
+// 			name: DataTypes.TEXT,
+// 		},
+// 		{
+// 			sequelize,
+// 			tableName: "musics",
+// 			schema: "public",
+// 			freezeTableName: true,
+// 			timestamps: false,
+// 		},
+// 	);
+
+// 	Music.associate = function (models) {
+// 		Music.hasMany(models.PlaylistMusic, {
+// 			foreignKey: "id_music",
+// 			sourceKey: "id",
+// 		});
+// 	};
+
+// 	return Music;
+// };
+
 "use strict";
 
 module.exports = (sequelize, DataTypes) => {
-	const Music = sequelize.define(
-		"Music",
-		{
-			id: {
-				type: DataTypes.INTEGER,
-				primaryKey: true,
-			},
-			name: DataTypes.TEXT,
-		},
-		{
-			sequelize,
-			tableName: "musics",
-			schema: "public",
-			freezeTableName: true,
-			timestamps: false,
-		},
-	);
+  const Music = sequelize.define(
+    "Music",
+    {
+      id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+      },
+      name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+    },
+    {
+      tableName: "musics",
+      schema: "public",
+      freezeTableName: true,
+      timestamps: false,
+    }
+  );
 
-	Music.associate = function (models) {
-		Music.hasMany(models.PlaylistMusic, {
-			foreignKey: "id_music",
-			sourceKey: "id",
-		});
-	};
+  Music.associate = (models) => {
+    Music.belongsToMany(models.Playlist, {
+      through: models.PlaylistMusic,
+      foreignKey: "id_music",
+      otherKey: "id_playlist",
+      as: "playlists",
+    });
+  };
 
-	return Music;
+  return Music;
 };
+

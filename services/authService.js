@@ -13,8 +13,8 @@ const login = async (email, password) => {
 
     // 3. Gerar o token de autenticação
     const token = jwt.sign(
-        { id: user.id, role: user.role }, 
-        'SEGREDO_SUPER_SECRETO_AQUI', // Use uma variável de ambiente real
+        { id: user.id, email: user.email, role: user.role }, 
+        process.env.JWT_SECRET || 'SEGREDO_SUPER_SECRETO_AQUI', // Use uma variável de ambiente real
         { expiresIn: '1d' }
     );
 

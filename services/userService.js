@@ -13,13 +13,13 @@ const returnAllUsers = async (req, res) => {
 
 // Função para criar um novo user
 const createUser = async (req, res) => {
-	const { id, name, email, password_hash } = req.body;
-	console.log({ id, name, email, password_hash });
+	const { id, name, email, password_hash, role } = req.body;
+	console.log({ id, name, email, password_hash, role });
 	try {
-		if (!id || !name || !email) {
+		if (!id || !name || !email || !password_hash) {
 			return res
 				.status(400)
-				.json({ message: "ID, name e email são obrigatórios." });
+				.json({ message: "ID, nome, email e senha são obrigatórios." });
 		}
 
 		const user = await userRepository.createUser({
@@ -27,6 +27,7 @@ const createUser = async (req, res) => {
 			name,
 			email,
 			password_hash,
+			role,
 		});
 		res.status(201).json(user);
 	} catch (error) {
@@ -37,17 +38,19 @@ const createUser = async (req, res) => {
 
 // Função para atualizar um user
 const updateUser = async (req, res) => {
-	const { name, email } = req.body;
+	const { name, email, password_hash, role } = req.body;
 	const id = parseInt(req.params.id);
 	try {
 		const updatedUser = await userRepository.updateUser({
 			id,
 			name,
 			email,
+			password_hash,
+			role,
 		});
 
-		if (updateUser) {
-			res.status(200).json(updateUser);
+		if (updatedUser) {
+			res.status(200).json(updatedUser);
 		} else {
 			res.status(404).json({ message: "user não encontrado" });
 		}

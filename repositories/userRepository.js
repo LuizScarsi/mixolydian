@@ -29,15 +29,15 @@ const createUser = async (userData) => {
 };
 
 // Função para atualizar um user
-const updateUser = async (id, userData) => { // Ajustado para receber ID e os dados separados
+const updateUser = async (userData) => { // Ajustado para receber ID e os dados separados
     try {
         // O hook 'beforeSave' no Model User.js garantirá que a nova senha
         // (se incluída em userData) será automaticamente hasheada.
 
-        await model.User.update(userData, { where: { id: id } });
+        await model.User.update(userData, { where: { id: userData.id } });
 
         // Retornar o user atualizado (sem o hash)
-        return await model.User.findByPk(id, {
+        return await model.User.findByPk(userData.id, {
             attributes: { exclude: ['password_hash'] }
         });
     } catch (error) {

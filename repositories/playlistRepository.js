@@ -35,31 +35,35 @@ const createPlaylist = async (playlist) => {
 };
 
 // Função para atualizar uma playlist
-const updatePlaylist = async (playlist) => {
-	try {
-		// // Atualizar o user
-		// await model.Playlist.update(playlist, {
-		// 	where: { id_user: playlist.id_user},
-		// });
+const updatePlaylist = async (playlistId, data, musicIds) => {
+  // 1️⃣ Buscar playlist
+  const playlist = await model.Playlist.findByPk(playlistId);
 
-		// Atualizar as musicas
-		await model.Playlist.update(playlist, {
-			where: { musics: playlist.musics},
-		});
+  if (!playlist) {
+    throw new Error("Playlist não encontrada");
+  }
 
-		// Retornar a playlist atualizada
-		return await model.Playlist.findByPk(playlist.id_user);
-	} catch (error) {
-		throw error;
-	}
+  // 2️⃣ Atualizar campos simples
+  await playlist.update({
+    name: data.name,
+    description: data.description,
+  });
+
+  // 3️⃣ Atualizar músicas (tabela pivot)
+  if (Array.isArray(musicIds)) {
+    await playlist.setMusics(musicIds);
+  }
+
+  return playlist;
 };
 
+
 // Função para deletar uma playlist
-const deletePlaylist = async (id_user) => {
+const deletePlaylist = async (id_playlist) => {
 	try {
-		const playlist = await getPlaylistByUserId(id_user);
-		// Deletar o aluno
-		await model.Playlist.destroy({ where: { id_user: id_user} });
+		const playlist = await getPlaylistByUserId(id_playlist);
+		await model.PlaylistMusic.destroy({ where: { id_playlist: id_playlist} });
+		await model.Playlist.destroy({ where: { id: id_playlist} });
 
 		return playlist;
 	} catch (error) {

@@ -76,25 +76,35 @@ CREATE TABLE ratings
     REFERENCES playlists (id)
 );
 
--- 5. Inserção de Dados de Teste
-INSERT INTO users (id, name, email) VALUES (1, 'Alice Miranda', 'alice@email.com');
-INSERT INTO users (id, name, email) VALUES (2, 'Bob Silva', 'bob@email.com');
+-- ---------------------------------------------------------
+-- INSERÇÃO DE DADOS (SEED)
+-- ---------------------------------------------------------
 
-INSERT INTO musics (id, name) VALUES (1, 'Bohemian Rhapsody');
-INSERT INTO musics (id, name) VALUES (2, 'Interstate Love Song');
-INSERT INTO musics (id, name) VALUES (3, 'In the End');
+-- Inserindo Usuários (Senhas convertidas para hash de '123456')
+INSERT INTO users (id, name, email, password_hash, role) VALUES 
+(1, 'Luiz', 'luiz@email.com', '$2b$10$7R9I6I2Wn5vH5I8p9P5uO.A6YfH9UeG0F1Xm3Y4Z5A6B7C8D9E0F1', 'user'),
+(2, 'Otavio', 'otavio@email.com', '$2b$10$7R9I6I2Wn5vH5I8p9P5uO.A6YfH9UeG0F1Xm3Y4Z5A6B7C8D9E0F1', 'user'),
+(3, 'Admin Sistema', 'admin@email.com', '$2b$10$7R9I6I2Wn5vH5I8p9P5uO.A6YfH9UeG0F1Xm3Y4Z5A6B7C8D9E0F1', 'admin');
 
-INSERT INTO playlists (id, name, description) VALUES (1, 'Rock Clássico', 'Melhores do Rock dos anos 70/80');
-INSERT INTO playlists (id, name, description) VALUES (2, 'Grunge & Nu Metal', 'Anos 90 e 2000');
+-- Inserindo Músicas
+INSERT INTO musics (id, name) VALUES 
+(1, 'Bohemian Rhapsody'), (2, 'Hotel California'), (3, 'Stairway to Heaven'),
+(4, 'Creep'), (5, 'Smells Like Teen Spirit'), (6, 'Everlong');
 
--- Associações: Bob é dono das duas playlists
-INSERT INTO user_playlist (id_user, id_playlist) VALUES (2, 1);
-INSERT INTO user_playlist (id_user, id_playlist) VALUES (2, 2);
+-- Inserindo Playlists
+INSERT INTO playlists (id, name, description) VALUES 
+(10, 'Rock Clássico do Luiz', 'As melhores do Luiz'),
+(11, 'Vibe Relax Luiz', 'Para estudar'),
+(20, 'Grunge do Otavio', 'Anos 90'),
+(21, 'Favoritas do Otavio', 'As que mais ouço');
 
--- Músicas nas playlists
-INSERT INTO playlist_music (id_playlist, id_music) VALUES (1, 1);
-INSERT INTO playlist_music (id_playlist, id_music) VALUES (2, 2);
-INSERT INTO playlist_music (id_playlist, id_music) VALUES (2, 3);
+-- Associando Playlists aos Usuários
+INSERT INTO user_playlist (id_user, id_playlist) VALUES 
+(1, 10), (1, 11), -- Luiz dono das playlists 10 e 11
+(2, 20), (2, 21); -- Otavio dono das playlists 20 e 21
 
--- Avaliação: Alice avalia a playlist do Bob
-INSERT INTO ratings (stars, review, id_user, id_playlist) VALUES (5, 'Seleção incrível!', 1, 1);
+-- Adicionando Músicas às Playlists
+-- Playlist 10 (Luiz): Musicas 1, 2, 3
+INSERT INTO playlist_music (id_playlist, id_music) VALUES (10, 1), (10, 2), (10, 3);
+-- Playlist 20 (Otavio): Musicas 4, 5, 6
+INSERT INTO playlist_music (id_playlist, id_music) VALUES (20, 4), (20, 5), (20, 6);
