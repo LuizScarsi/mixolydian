@@ -76,6 +76,7 @@ module.exports = (sequelize, DataTypes) => {
 
     Playlist.hasMany(models.Rating, {
       foreignKey: "id_playlist",
+      onDelete: "CASCADE",
     });
   };
 

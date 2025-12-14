@@ -4,6 +4,7 @@ const userRouter = require("./controllers/userController");
 const playlistRouter = require("./controllers/playlistController");
 const musicRouter = require("./controllers/musicController");
 const authRouter = require("./controllers/authController");
+const ratingRouter = require("./controllers/ratingController");
 
 const app = express();
 app.use(express.json());
@@ -20,3 +21,4 @@ app.use("/user", userRouter);
 app.use("/playlist", playlistRouter);
 app.use("/music", musicRouter);
 app.use("/auth", authRouter);
+app.use("/rating", ratingRouter);

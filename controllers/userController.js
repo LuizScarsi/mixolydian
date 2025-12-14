@@ -1,5 +1,6 @@
 const express = require("express");
 const userService = require("../services/userService");
+const authorize = require("../middleware/authMiddleware");
 
 const userRouter = express.Router();
 
@@ -16,6 +17,6 @@ userRouter.get("/:id", userService.returnUserById);
 userRouter.put("/:id", userService.updateUser);
 
 // DELETE /user/:id - Deletar user
-userRouter.delete("/:id", userService.deleteUser);
+userRouter.delete("/:id", authorize(['admin']), userService.deleteUser);
 
 module.exports = userRouter;

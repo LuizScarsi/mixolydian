@@ -73,7 +73,9 @@ CREATE TABLE ratings
     REFERENCES users (id),
   CONSTRAINT FK_ratings_playlist
     FOREIGN KEY (id_playlist)
-    REFERENCES playlists (id)
+    REFERENCES playlists (id),
+  CONSTRAINT unique_user_playlist_rating
+    UNIQUE (id_user, id_playlist)
 );
 
 -- ---------------------------------------------------------

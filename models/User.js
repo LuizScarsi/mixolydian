@@ -25,7 +25,12 @@ module.exports = (sequelize, DataTypes) => {
             }
         }
     });
-
+    User.associate = (models) => {
+        User.hasMany(models.Rating, {
+            foreignKey: "id_user",
+            onDelete: "CASCADE",
+        }); 
+    }
     User.prototype.validatePassword = function (password) {
         return bcrypt.compare(password, this.password_hash);
     };
