@@ -1,23 +1,5 @@
 const model = require("../models");
 
-// Função para obter todos as matriculas
-// const getAllPlaylists = async () => {
-// 	return await model.Playlist.findAll({
-// 		include: [
-// 			{
-// 				model: model.User,
-// 				through: { attributes: [] },
-// 				attributes: ["id", "name", "role"],
-// 			},
-// 			{
-// 				model: model.Music,
-// 				through: { attributes: [] },
-// 				attributes: ["id", "name"],
-// 			},
-// 		],
-// 	});
-// };
-
 const getAllPlaylists = async () => {
   const playlists = await model.Playlist.findAll({
     include: [
@@ -43,6 +25,8 @@ const getAllPlaylists = async () => {
   return playlists.map((p) => {
     const ownerRelation = p.UserPlaylists?.[0];
     const ownerUser = ownerRelation?.User;
+	console.log("OWNER USER:", ownerUser);
+	console.log("owner relation:", ownerRelation);
 
     return {
       id: Number(p.id),

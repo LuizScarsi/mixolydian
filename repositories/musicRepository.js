@@ -1,4 +1,3 @@
-// repositories/musicRepository.js
 const model = require("../models");
 
 // 1. Obter todas as músicas

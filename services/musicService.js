@@ -1,4 +1,3 @@
-// services/musicService.js
 const musicRepository = require("../repositories/musicRepository");
 
 // 1. Retornar todas as músicas
