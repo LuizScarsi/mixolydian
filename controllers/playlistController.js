@@ -17,6 +17,6 @@ playlistRouter.get("/user/:id_user", playlistService.returnAllUserPlaylists);
 playlistRouter.put("/:id_playlist", authorize(['user', 'admin']), playlistService.updatePlaylist);
 
 // DELETE /playlist/:id_playlist - Deletar playlist
-playlistRouter.delete("/:id_playlist", authorize(['user', 'admin']), playlistService.deletePlaylist);
+playlistRouter.delete("/:id_playlist", authorize(['admin']), playlistService.deletePlaylist);
 
 module.exports = playlistRouter;

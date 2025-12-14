@@ -64,6 +64,14 @@ const updateUser = async (req, res) => {
 const deleteUser = async (req, res) => {
 	try {
 		const id = parseInt(req.params.id);
+
+		const loggedUserId = req.userId;
+		if (Number(id) === Number(loggedUserId)) {
+			return res.status(403).json({
+			message: "Você não pode excluir seu próprio usuário.",
+			});
+		}
+
 		const removedUser = await userRepository.deleteUser(id);
 
 		if (removedUser) {

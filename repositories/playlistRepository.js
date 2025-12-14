@@ -2,7 +2,14 @@ const model = require("../models");
 
 // Função para obter todos as matriculas
 const getAllPlaylists = async () => {
-	return await model.Playlist.findAll();
+	return await model.Playlist.findAll({
+		include: [
+			{
+				model: model.UserPlaylist,
+				attributes: ["id_user"],
+			},
+		]
+	});
 };
 
 // Função para obter playlist por ID do user
