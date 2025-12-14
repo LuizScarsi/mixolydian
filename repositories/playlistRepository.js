@@ -1,15 +1,65 @@
 const model = require("../models");
 
 // Função para obter todos as matriculas
+// const getAllPlaylists = async () => {
+// 	return await model.Playlist.findAll({
+// 		include: [
+// 			{
+// 				model: model.User,
+// 				through: { attributes: [] },
+// 				attributes: ["id", "name", "role"],
+// 			},
+// 			{
+// 				model: model.Music,
+// 				through: { attributes: [] },
+// 				attributes: ["id", "name"],
+// 			},
+// 		],
+// 	});
+// };
+
 const getAllPlaylists = async () => {
-	return await model.Playlist.findAll({
-		include: [
-			{
-				model: model.UserPlaylist,
-				attributes: ["id_user"],
-			},
-		]
-	});
+  const playlists = await model.Playlist.findAll({
+    include: [
+      {
+        model: model.Music,
+        as: "musics",
+        attributes: ["id", "name"],
+        through: { attributes: [] },
+      },
+      {
+        model: model.UserPlaylist,
+        include: [
+          {
+            model: model.User,
+            attributes: ["id", "name"],
+          },
+        ],
+      },
+    ],
+  });
+
+  // 🔥 NORMALIZAÇÃO (O PONTO QUE FALTAVA)
+  return playlists.map((p) => {
+    const ownerRelation = p.UserPlaylists?.[0];
+    const ownerUser = ownerRelation?.User;
+
+    return {
+      id: Number(p.id),
+      name: p.name,
+      description: p.description,
+
+      // 👤 DONO DA PLAYLIST
+      owner: ownerUser ? ownerUser.name : "Sem dono",
+      owner_id: ownerUser ? ownerUser.id : null,
+
+      // 🎵 MÚSICAS DA PLAYLIST
+      musics: p.musics.map((m) => ({
+        id: Number(m.id),
+        name: m.name,
+      })),
+    };
+  });
 };
 
 // Função para obter playlist por ID do user
